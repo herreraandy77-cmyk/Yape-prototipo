@@ -1,0 +1,187 @@
+<!doctype html>
+<html lang="es"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Yape mejorado · Prototipo Grupo 3</title>
+<style>
+:root{--pu:#5C2592;--te:#12C2B3;--bg:#EFE6F8;--card:#fff;--tx:#241337;--mu:#6B5A80;--ln:#E2D5F2;--soft:#F4EDFB;--wa:#FFF1DA;--wab:#F0C27A;--wat:#6A4106;--ok:#0B6E66;--okb:#E4F7F5;color-scheme:light}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0F0819;--card:#22143A;--tx:#F3ECFB;--mu:#B9A8D0;--ln:#3A2757;--soft:#2B1B48;--wa:#3A2A0E;--wab:#8A6420;--wat:#F6D9A0;--ok:#7FE3D9;--okb:#12403C;color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#0F0819;--card:#22143A;--tx:#F3ECFB;--mu:#B9A8D0;--ln:#3A2757;--soft:#2B1B48;--wa:#3A2A0E;--wab:#8A6420;--wat:#F6D9A0;--ok:#7FE3D9;--okb:#12403C;color-scheme:dark}
+:root{box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+html{scroll-padding-top:env(safe-area-inset-top,0px);height:100%}
+*,*::before,*::after{box-sizing:inherit}
+body{height:100%;margin:0;background:var(--bg);color:var(--tx);font:15px/1.4 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;display:flex;align-items:center;justify-content:center;gap:40px;padding:16px}
+button{font:inherit;cursor:pointer;color:inherit}
+button:focus-visible,input:focus-visible,select:focus-visible,.row:focus-visible{outline:3px solid var(--te);outline-offset:2px}
+.panel{width:300px;display:flex;flex-direction:column;gap:12px}
+.panel h1{font-size:22px;margin:0;line-height:1.2}
+.panel p{margin:0;color:var(--mu);font-size:14px}
+.panel .box{background:var(--card);border:1.5px solid var(--ln);border-radius:16px;padding:14px;display:flex;flex-direction:column;gap:8px}
+.panel .box b{font-size:14px}
+.pb{background:var(--soft);border:1.5px solid var(--ln);border-radius:12px;padding:9px 12px;text-align:left;font-size:14px}
+.pb:hover{border-color:var(--pu)}
+.pb.on{background:var(--wa);border-color:var(--wab);color:var(--wat)}
+.phone{width:390px;max-width:100%;height:min(790px,100%);background:var(--card);border:9px solid #1C1230;border-radius:44px;overflow:hidden;display:flex;flex-direction:column;position:relative;box-shadow:0 20px 50px rgba(40,10,80,.3)}
+#app{flex:1;display:flex;flex-direction:column;min-height:0}
+.hd{background:var(--pu);color:#fff;padding:18px 18px 16px;display:flex;align-items:center;gap:10px}
+.hd b{font-size:20px;display:block}.hd small{opacity:.9;font-size:13px}
+.bk{background:rgba(255,255,255,.18);border:0;color:#fff;width:36px;height:36px;border-radius:50%;font-size:22px;line-height:1}
+.bd{flex:1;overflow:auto;padding:14px 16px 18px;display:flex;flex-direction:column;gap:12px}
+.bal{background:var(--pu);color:#fff;padding:2px 18px 20px}
+.bal small{opacity:.9}.bal .n{font-size:38px;font-weight:700;letter-spacing:-.5px;display:flex;align-items:center;gap:12px}
+.bal button{background:rgba(255,255,255,.2);border:0;color:#fff;border-radius:10px;padding:4px 10px;font-size:13px}
+.acts{display:flex;gap:10px}
+.btn{flex:1;border-radius:16px;padding:14px;font-weight:700;font-size:16px;border:2px solid var(--pu);background:transparent;color:var(--pu);text-align:center}
+.btn.p{background:var(--pu);color:#fff}.btn.t{background:var(--te);border-color:var(--te);color:#06403B}
+.bd>.btn{flex:none}.bd>.btn[style*='margin-top:auto']{margin-top:auto}
+.btn[disabled]{opacity:.45;cursor:not-allowed}
+.in{width:100%;border:2px solid var(--ln);background:var(--soft);color:var(--tx);border-radius:14px;padding:12px 14px;font:inherit}
+.row{display:flex;align-items:center;gap:12px;padding:10px 8px;border-radius:14px;border:1.5px solid transparent;cursor:pointer;background:transparent;width:100%;text-align:left}
+.row:hover{border-color:var(--pu);background:var(--soft)}
+.av{width:44px;height:44px;min-width:44px;border-radius:50%;color:#fff;font-weight:700;display:flex;align-items:center;justify-content:center}
+.nm{font-weight:700}.sb{font-size:13px;color:var(--mu)}
+.chip{display:inline-block;background:var(--okb);color:var(--ok);border:1px solid var(--te);border-radius:10px;padding:0 8px;font-size:12px;font-weight:600;margin-right:4px}
+.warn{background:var(--wa);border:1.5px solid var(--wab);color:var(--wat);border-radius:14px;padding:10px 12px;font-size:14px;display:flex;gap:8px;align-items:flex-start}
+.warn.err{border-color:#D9534F}
+.card{background:var(--soft);border:1.5px solid var(--ln);border-radius:18px;padding:16px;text-align:center}
+.card .av{margin:0 auto 8px;width:62px;height:62px;font-size:21px}
+.amt{font-size:34px;font-weight:700;text-align:center;color:var(--pu);border:0;background:transparent;width:100%;font-family:inherit}
+:root[data-theme="dark"] .amt{color:#fff}
+.chs{display:flex;gap:8px;flex-wrap:wrap}
+.fc{border:1.5px solid var(--ln);background:var(--soft);border-radius:20px;padding:5px 14px;font-size:14px}
+.fc.on{background:var(--pu);color:#fff;border-color:var(--pu)}
+.ok{width:86px;height:86px;border-radius:50%;background:var(--te);margin:6px auto;display:flex;align-items:center;justify-content:center}
+.det div{display:flex;justify-content:space-between;padding:7px 0;border-bottom:1px dashed var(--ln);gap:10px}
+.det span{color:var(--mu)}.det b{text-align:right}
+.in-amt{color:var(--ok);font-weight:700}.out-amt{font-weight:700}
+.lbl{font-weight:700;font-size:14px;color:var(--mu)}
+.hint{font-size:13px;color:var(--mu)}
+.demo{background:none;border:0;color:var(--mu);font-size:12px;text-decoration:underline;align-self:center;margin-top:auto}
+.grid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
+.tile{background:var(--soft);border:1.5px solid var(--ln);border-radius:16px;padding:10px 2px;display:flex;flex-direction:column;align-items:center;gap:4px;font-size:12px;font-weight:600}
+.tile i{font-style:normal;font-size:24px}.tile:hover{border-color:var(--pu)}
+.bd>*{flex-shrink:0}.panel{max-height:100%;overflow:auto}.strip{display:flex;gap:10px;overflow-x:auto;padding-bottom:4px}
+.pc{min-width:150px;background:var(--soft);border:1.5px solid var(--ln);border-radius:16px;padding:12px;display:flex;flex-direction:column;gap:4px;text-align:left}
+.pc.w{min-width:0;width:100%;flex-direction:row;align-items:center;gap:12px}
+.dsc{background:var(--te);color:#06403B;font-weight:700;border-radius:8px;padding:0 8px;font-size:12px;align-self:flex-start}
+.mj{background:var(--te);color:#06403B;font-size:11px;font-weight:700;border-radius:8px;padding:1px 7px;margin-left:8px;vertical-align:middle}
+.top{display:flex;align-items:center;gap:10px}.top b{flex:1}
+.top button{background:rgba(255,255,255,.2);border:0;color:#fff;width:38px;height:38px;border-radius:50%;font-size:18px}
+.toast{position:absolute;left:16px;right:16px;bottom:18px;background:#1C1230;color:#fff;border-radius:14px;padding:12px 14px;font-size:14px;opacity:0;transform:translateY(10px);transition:.25s;pointer-events:none}
+.toast.on{opacity:1;transform:none}
+@media (max-width:820px){.panel{display:none}body{padding:0;gap:0}.phone{width:100%;height:100%;border:0;border-radius:0;box-shadow:none}}
+@media (prefers-reduced-motion:reduce){.toast{transition:none}}
+</style></head><body>
+<aside class="panel">
+<h1>Yape mejorado</h1>
+<p>Prototipo funcional del Grupo 3. Toca la app como lo haría un usuario.</p>
+<div class="box"><b>Recorridos para la exposición</b>
+<button class="pb" onclick="go('home')">Inicio: saldo visible al entrar</button>
+<button class="pb" onclick="go('yape')">Yapear: contactos con el mismo nombre</button>
+<button class="pb" onclick="go('mov')">Movimientos: buscador y filtros</button>
+<button class="pb" onclick="go('promos')">Promociones de Yape</button>
+<button class="pb" onclick="go('cred')">Créditos Yape</button>
+<button class="pb" onclick="go('serv')">Servicios y recargas</button>
+<button class="pb" id="phl" onclick="s.hl=!s.hl;upd();render()">Resaltar mejoras</button>
+<button class="pb" id="pdown" onclick="tog()">Simular caída del servicio</button>
+<button class="pb" onclick="reset()">Reiniciar demo</button></div>
+<div class="box"><b>Qué mejoramos según los encuestados</b>
+<p>Contactos con el mismo nombre (Usuario 1): alias, últimos 3 dígitos y aviso.</p>
+<p>Pagos antiguos (4 de 5 usan el BCP): búsqueda y filtros dentro de Yape.</p>
+<p>Caídas ocasionales (Usuario 4): aviso claro y reintento.</p>
+<p>Se conserva lo que valoraron: saldo visible y código de seguridad.</p><p>Las etiquetas «Mejora» marcan en la app dónde está cada cambio.</p></div>
+<p>Prototipo conceptual con datos de ejemplo; no es la app oficial de Yape.</p>
+</aside>
+<main class="phone"><div id="app"></div><div class="toast" id="toast" role="status"></div></main>
+<script>
+const BASE=new Date(2026,10,13);
+const C=[{n:"Carlos Ramos",a:"Compañero de trabajo",t:"482",c:"#7B3FB0"},{n:"Carlos Ramos",a:"Primo",t:"917",c:"#0F9E92"},{n:"Carla Ruiz",a:"",t:"305",c:"#C2428F"},{n:"María Torres",a:"Vecina",t:"128",c:"#B8650F"},{n:"Luis Paredes",a:"",t:"664",c:"#3B6FD4"}];
+const $=i=>document.getElementById(i);
+const fm=n=>"S/ "+n.toFixed(2);
+const fd=d=>d.toLocaleDateString("es-PE",{day:"numeric",month:"short",year:"numeric"});
+const rnd=n=>String(Math.floor(Math.random()*10**n)).padStart(n,"0");
+const dup=n=>C.filter(c=>c.n===n).length>1;
+const ini=n=>n.split(" ").map(w=>w[0]).join("");
+const cOf=m=>C.find(c=>c.n===m.n&&c.a===m.a)||{c:"#555"};
+const chip=a=>a?`<span class="chip">${a}</span>`:"";
+const tel=t=>`Cel. ••• ••• ${t}`;
+let s,M;
+function seed(){const r=(n,a,t,out,amt,y,m,d)=>({n,a,t,out,amt,d:new Date(y,m,d),op:rnd(8),code:rnd(3)});
+return[r("Carla Ruiz","","305",1,12.5,2026,10,13),r("María Torres","Vecina","128",0,30,2026,10,11),r("Carlos Ramos","Primo","917",1,50,2026,10,4),r("Luis Paredes","","664",0,80,2026,9,21),r("Carlos Ramos","Compañero de trabajo","482",0,25,2026,9,8),r("María Torres","Vecina","128",1,15,2026,8,17),r("Carla Ruiz","","305",0,40,2026,7,30)]}
+function reset(){s={v:"home",cm:400,cd:30,cs:0,k:"serv",sel:null,amt:"",type:"all",per:"all",q:"",fq:"",hide:false,down:false,saldo:350,hl:true,det:null,back:"home"};M=seed();upd();render()}
+function upd(){const b=$("pdown");b.classList.toggle("on",s.down);$("phl").classList.toggle("on",s.hl);$("phl").textContent=s.hl?"Resaltar mejoras: sí":"Resaltar mejoras: no";b.textContent=s.down?"Servicio caído: toca para restablecer":"Simular caída del servicio"}
+function go(v){s.v=v;if(v==="yape")s.fq="";if(v==="mov"){s.q="";s.type="all";s.per="all"}render()}
+function tog(){s.down=!s.down;upd();render();toast(s.down?"Caída simulada: prueba yapear o mira el aviso en Inicio.":"Servicio restablecido.")}
+function toast(m){const t=$("toast");t.textContent=m;t.classList.add("on");clearTimeout(toast.h);toast.h=setTimeout(()=>t.classList.remove("on"),2600)}
+const hd=(t,sub,back)=>`<div class="hd">${back?`<button class="bk" aria-label="Volver" onclick="go('${back}')">‹</button>`:""}<div><b>${t}</b><small>${sub||""}</small></div></div>`;
+const mrow=(m,i)=>`<button class="row" onclick="det(${i})"><span class="av" style="background:${cOf(m).c}">${ini(m.n)}</span><span style="flex:1"><div class="nm">${m.n}</div><div class="sb">${chip(m.a)}${fd(m.d)}</div></span><span class="${m.out?"out-amt":"in-amt"}">${m.out?"− ":"+ "}${fm(m.amt)}</span></button>`;
+function det(i){s.det=M[i];s.back=s.v;s.v="det";render()}
+const V={
+home:()=>`<div class="hd" style="padding-bottom:10px"><div class="top" style="width:100%"><button aria-label="Mi perfil" onclick="toast('Mi perfil no está incluido en el prototipo.')">👤</button><b>Hola</b><button aria-label="Notificaciones" onclick="toast('Sin notificaciones nuevas.')">🔔</button></div></div>
+<div class="bal"><small>Tu saldo</small><div class="n"><span>${s.hide?"S/ ••••":fm(s.saldo)}</span><button onclick="s.hide=!s.hide;render()">${s.hide?"Mostrar":"Ocultar"}</button></div></div>
+<div class="bd">${s.down?`<div class="warn err" role="alert"><span>⚠</span><span><b>Servicio con demoras.</b>${B()} Tu saldo y tus movimientos pueden tardar en actualizarse. Tu dinero está seguro.</span></div>`:""}
+<div class="grid">${[["💸","Yapear","go('yape')"],["📷","Escanear QR",NA],["💡","Servicios","svc('serv')"],["📱","Recargas","svc('rec')"],["🏷️","Promos","go('promos')"],["💰","Créditos","go('cred')"],["🛍️","Tienda",NA],["🎟️","Entradas",NA]].map(([i,l,a])=>`<button class="tile" onclick="${a}"><i>${i}</i>${l}</button>`).join("")}</div>
+<div class="lbl">Promos para ti</div><div class="strip">${P.slice(0,3).map((p,i)=>`<button class="pc" onclick="promo(${i})"><span style="font-size:26px">${p.e}</span><span class="dsc">${p.d}</span><b>${p.t}</b><span class="sb">${p.s}</span></button>`).join("")}</div>
+<div class="lbl">Últimos movimientos</div>${M.slice(0,3).map((m,i)=>mrow(m,i)).join("")}
+<button class="demo" onclick="tog()">Demo: ${s.down?"restablecer servicio":"simular caída del servicio"}</button></div>`,
+promos:()=>`${hd("Promos","Elige una y yapea para obtener el descuento","home")}<div class="bd">${P.map((p,i)=>`<button class="pc w" onclick="promo(${i})"><span style="font-size:34px">${p.e}</span><span style="flex:1"><span class="dsc">${p.d}</span><div class="nm">${p.t}</div><div class="sb">${p.s}</div></span><b>${fm(p.p)}</b></button>`).join("")}<div class="hint">Promociones de ejemplo con comercios ficticios.</div></div>`,
+cred:()=>`${hd("Créditos","Pide tu crédito 100% desde la app","home")}<div class="bd">${s.cs?`<div class="card"><div class="nm" style="font-size:20px">Confirma con tu código</div><div class="sb">Ingresa el código de validación para recibir ${fm(s.cm)}.</div></div><input id="cc" class="in" inputmode="numeric" maxlength="6" placeholder="Código de 6 dígitos" aria-label="Código de validación" oninput="$('cb').disabled=this.value.length<4"><div class="hint">En este prototipo sirve cualquier código de 4 a 6 dígitos.</div><button id="cb" class="btn p" style="margin-top:auto" disabled onclick="credit()">Confirmar crédito</button><button class="btn" onclick="s.cs=0;render()">Volver</button>`:`<div class="card"><div class="sb">Oferta pre-aprobada (ejemplo)</div><div style="font-size:34px;font-weight:700;color:var(--pu)">${fm(s.cm)}</div></div>
+<div class="lbl">Monto</div><div class="chs">${[200,400,600,800].map(v=>`<button class="fc ${s.cm===v?"on":""}" onclick="s.cm=${v};render()">S/ ${v}</button>`).join("")}</div>
+<div class="lbl">Fecha de pago</div><div class="chs">${[15,20,25,30].map(v=>`<button class="fc ${s.cd===v?"on":""}" onclick="s.cd=${v};render()">${v} días</button>`).join("")}</div>
+<div class="det"><div><span>Recibes hoy</span><b>${fm(s.cm)}</b></div><div><span>Pagas el</span><b>${fd(new Date(2026,10,13+s.cd))}</b></div></div><div class="hint">La tasa y las condiciones reales dependen de tu perfil. Datos de ejemplo.</div>
+<button class="btn p" style="margin-top:auto" onclick="s.cs=1;render()">Solicitar crédito</button>`}</div>`,
+serv:()=>`${hd(s.k==="rec"?"Recargas":"Servicios","Elige una empresa","home")}<div class="bd">${(s.k==="rec"?R:S).map((x,i)=>`<button class="row" onclick="pay(${i})"><span class="av" style="background:var(--pu)">${x[0]}</span><span class="nm">${x}</span></button>`).join("")}</div>`,
+pay:()=>`${hd(s.pay.t,"Completa los datos","serv")}<div class="bd"><input id="pf" class="in" inputmode="numeric" placeholder="${s.pay.f}" aria-label="${s.pay.f}" oninput="pchk()"><input id="pa" class="in" inputmode="decimal" placeholder="Monto en S/" aria-label="Monto" oninput="pchk()"><div id="pe"></div><button id="pg" class="btn p" style="margin-top:auto" disabled onclick="ppay()">Pagar</button></div>`,
+res:()=>{const r=s.res;return`${hd(r.t,r.sub)}<div class="bd" style="text-align:center"><div class="ok"><svg width="48" height="48" viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7.5" stroke="#fff" stroke-width="3.2" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div style="font-size:30px;font-weight:700;color:var(--pu)">${fm(r.amt)}</div><div>${r.line}</div><div class="det" style="text-align:left">${r.rows.map(x=>`<div><span>${x[0]}</span><b>${x[1]}</b></div>`).join("")}</div><button class="btn p" style="margin-top:auto" onclick="go('home')">Listo</button><button class="btn" onclick="go('mov')">Ver en Movimientos</button></div>`},
+yape:()=>`${hd("Yapear a un contacto"+B(),"¿A quién le envías?","home")}<div class="bd"><input class="in" placeholder="Buscar contacto" aria-label="Buscar contacto" value="${s.fq}" oninput="s.fq=this.value;lst()"><div id="lst"></div></div>`,
+conf:()=>{const c=s.sel,d=dup(c.n);return`${hd("Confirma tu yapeo","Revisa antes de enviar","yape")}<div class="bd"><div class="card"><div class="av" style="background:${c.c}">${ini(c.n)}</div><div class="nm" style="font-size:20px">${c.n}</div><div class="sb">${chip(c.a)}${tel(c.t)}</div></div>
+${d?`<div class="warn"><span>⚠</span><span><b>Tienes 2 contactos con este nombre.</b>${B()} Verifica que sea la persona correcta: ${c.a||"sin alias"}, ${tel(c.t)}.</span></div>`:""}
+<div><div class="hint" style="text-align:center">Monto a enviar</div><input id="amt" class="amt" inputmode="decimal" placeholder="S/ 0.00" value="${s.amt}" oninput="s.amt=this.value;chk()"></div>
+<div class="chs">${[10,20,50].map(v=>`<button class="fc" onclick="setAmt(${v})">S/ ${v}</button>`).join("")}</div><div id="er"></div>
+<button id="go" class="btn p" style="margin-top:auto" onclick="send()">Confirmar yapeo</button><button class="btn" onclick="go('yape')">Cambiar contacto</button></div>`},
+done:()=>{const m=s.last,c=cOf(m);return`${hd("¡Yapeaste!","Tu envío se realizó con éxito")}<div class="bd" style="text-align:center"><div class="ok"><svg width="48" height="48" viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7.5" stroke="#fff" stroke-width="3.2" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+<div style="font-size:30px;font-weight:700;color:var(--pu)">${fm(m.amt)}</div><div>enviados a <b>${m.n}</b> ${chip(m.a)}</div>
+<div class="det" style="text-align:left"><div><span>Celular</span><b>••• ••• ${m.t}</b></div><div><span>Fecha</span><b>${fd(m.d)}</b></div><div><span>N.° de operación</span><b>${m.op}</b></div><div><span>Código de seguridad</span><b>${m.code}</b></div></div>
+<button class="btn p" style="margin-top:auto" onclick="go('home')">Listo</button><button class="btn" onclick="go('mov')">Ver en Movimientos</button></div>`},
+err:()=>`${hd("No se pudo enviar","El servicio está con demoras")}<div class="bd"><div class="warn err" role="alert"><span>⚠</span><span><b>Tu yapeo no se realizó y no se descontó dinero.</b>${B()} Estamos con demoras en el servicio. Reintenta en unos segundos.</span></div>
+<button class="btn p" style="margin-top:auto" onclick="retry()">Reintentar</button><button class="btn" onclick="go('home')">Volver al inicio</button></div>`,
+mov:()=>`${hd("Movimientos"+B(),"Busca pagos de cualquier fecha","home")}<div class="bd"><input class="in" placeholder="Buscar por nombre, alias o monto" aria-label="Buscar movimientos" value="${s.q}" oninput="s.q=this.value;mlst()">
+<div class="chs">${[["all","Todos"],["out","Enviados"],["in","Recibidos"]].map(([k,l])=>`<button class="fc ${s.type===k?"on":""}" onclick="s.type='${k}';render()">${l}</button>`).join("")}</div>
+<select class="in" aria-label="Periodo" onchange="s.per=this.value;mlst()">${[["all","Todo el historial"],["m0","Este mes"],["m1","Mes pasado"],["old","Más antiguos"]].map(([k,l])=>`<option value="${k}" ${s.per===k?"selected":""}>${l}</option>`).join("")}</select><div class="hint" id="cnt"></div><div id="ml"></div></div>`,
+det:()=>{const m=s.det;return`${hd("Detalle de la operación",m.out?"Enviaste dinero":"Recibiste dinero",s.back)}<div class="bd"><div class="card"><div class="av" style="background:${cOf(m).c}">${ini(m.n)}</div><div class="nm" style="font-size:20px">${m.n}</div><div class="sb">${chip(m.a)}</div><div style="font-size:30px;font-weight:700;margin-top:6px" class="${m.out?"":"in-amt"}">${m.out?"− ":"+ "}${fm(m.amt)}</div></div>
+<div class="det">${m.t?`<div><span>Celular</span><b>••• ••• ${m.t}</b></div>`:""}<div><span>Fecha</span><b>${fd(m.d)}</b></div><div><span>N.° de operación</span><b>${m.op}</b></div><div><span>Código de seguridad</span><b>${m.code}</b></div></div></div>`}};
+function render(){$("app").innerHTML=V[s.v]();if(s.v==="yape")lst();if(s.v==="mov")mlst();if(s.v==="conf")chk()}
+function lst(){const q=s.fq.trim().toLowerCase(),L=C.filter(c=>(c.n+" "+c.a).toLowerCase().includes(q));
+const nd=new Set(L.filter(c=>dup(c.n)).map(c=>c.n)).size;
+$("lst").innerHTML=(L.length?(nd?`<div class="warn" style="margin-bottom:8px"><span>⚠</span><span><b>Hay contactos con el mismo nombre.</b>${B()} Los diferenciamos con alias y los últimos 3 dígitos del celular.</span></div>`:""):`<div class="hint">No encontramos ese contacto. Revisa el nombre o prueba con el alias.</div>`)+L.map(c=>`<button class="row" onclick="pick(${C.indexOf(c)})"><span class="av" style="background:${c.c}">${ini(c.n)}</span><span><div class="nm">${c.n}</div><div class="sb">${chip(c.a)}</div><div class="sb">${tel(c.t)}</div></span></button>`).join("")}
+function pick(i){s.sel=C[i];s.amt="";s.v="conf";render()}
+function setAmt(v){s.amt=String(v);$("amt").value=s.amt;chk()}
+function val(){const a=parseFloat(String(s.amt).replace(",","."));return a>0&&a<=s.saldo?a:0}
+function chk(){const a=parseFloat(String(s.amt).replace(",",".")),e=$("er");let m="";
+if(s.amt&&!(a>0))m="Ingresa un monto mayor a cero.";else if(a>s.saldo)m=`Tu saldo es ${fm(s.saldo)}. Ingresa un monto igual o menor.`;
+e.innerHTML=m?`<div class="warn err" role="alert"><span>⚠</span><span>${m}</span></div>`:"";$("go").disabled=!val()}
+function send(){if(!val())return;if(s.down){s.v="err";render();return}fin()}
+function retry(){if(s.down){toast("El servicio sigue con demoras. Reintenta en unos segundos.");return}fin()}
+function fin(){const a=val(),c=s.sel;s.saldo-=a;const m={n:c.n,a:c.a,t:c.t,out:1,amt:a,d:BASE,op:rnd(8),code:rnd(3)};M.unshift(m);s.last=m;s.v="done";render()}
+function mlst(){const q=s.q.trim().toLowerCase(),y=BASE.getFullYear(),mo=BASE.getMonth();
+const L=M.map((m,i)=>[m,i]).filter(([m])=>{if(s.type==="out"&&!m.out)return 0;if(s.type==="in"&&m.out)return 0;
+const k=(m.d.getFullYear()-y)*12+m.d.getMonth()-mo;if(s.per==="m0"&&k!==0)return 0;if(s.per==="m1"&&k!==-1)return 0;if(s.per==="old"&&k>-2)return 0;
+return!q||(m.n+" "+m.a+" "+m.amt.toFixed(2)).toLowerCase().includes(q)});
+$("cnt").textContent=L.length===1?"1 movimiento":`${L.length} movimientos`;
+$("ml").innerHTML=L.length?L.map(([m,i])=>mrow(m,i)).join(""):`<div class="warn"><span>🔎</span><span>No encontramos movimientos con estos filtros. Prueba con otro periodo o quita un filtro.</span></div><button class="btn" style="margin-top:10px;width:100%" onclick="go('mov')">Quitar filtros</button>`}
+const NA="toast('Esta opción no está incluida en el prototipo.')";
+const B=()=>s.hl?'<span class="mj">Mejora</span>':"";
+const P=[{t:"Combo de pollo y gaseosa",s:"Pollería Don Beto (ejemplo)",d:"-30%",p:24.9,e:"🍗"},{t:"2 entradas de cine",s:"Cine Central (ejemplo)",d:"2x1",p:34,e:"🎬"},{t:"Café y sándwich",s:"Café Aroma (ejemplo)",d:"-25%",p:15,e:"☕"},{t:"Recarga de S/ 20",s:"Operadora móvil (ejemplo)",d:"+ bono de datos",p:20,e:"📱"}];
+const S=["Empresa de luz","Empresa de agua","Internet y cable","Gas natural"],R=["Operador móvil A","Operador móvil B","Operador móvil C"];
+function add(n,out,amt,t=""){const m={n,a:"",t,out,amt,d:BASE,op:rnd(8),code:rnd(3)};M.unshift(m);return m}
+function promo(i){const p=P[i];if(s.down){toast("Servicio con demoras. Reintenta en unos segundos.");return}
+if(p.p>s.saldo){toast("Tu saldo no alcanza para esta promo.");return}
+s.saldo-=p.p;const m=add(p.s.replace(" (ejemplo)",""),1,p.p);s.res={t:"¡Promo activada!",sub:"Muestra la constancia en el comercio",amt:p.p,line:`${p.t}: <b>${p.d}</b>`,rows:[["Comercio",m.n],["Fecha",fd(m.d)],["N.° de operación",m.op],["Código de seguridad",m.code]]};s.v="res";render()}
+function credit(){if(s.down){toast("Servicio con demoras. Reintenta en unos segundos.");return}
+s.saldo+=s.cm;const m=add("Crédito Yape",0,s.cm);s.cs=0;s.res={t:"¡Crédito desembolsado!",sub:"Ya está en tu saldo",amt:s.cm,line:`Pagas el <b>${fd(new Date(2026,10,13+s.cd))}</b>`,rows:[["Fecha",fd(m.d)],["N.° de operación",m.op],["Código de seguridad",m.code]]};s.v="res";render()}
+function svc(k){s.k=k;s.v="serv";render()}
+function pay(i){const n=(s.k==="rec"?R:S)[i];s.pay={t:s.k==="rec"?"Recarga "+n:"Pagar "+n,n,f:s.k==="rec"?"Número de celular":"N.° de suministro"};s.v="pay";render()}
+function pchk(){const a=parseFloat($("pa").value.replace(",",".")),ok=$("pf").value.length>=4&&a>0&&a<=s.saldo;$("pe").innerHTML=a>s.saldo?`<div class="warn err" role="alert"><span>⚠</span><span>Tu saldo es ${fm(s.saldo)}. Ingresa un monto igual o menor.</span></div>`:"";$("pg").disabled=!ok}
+function ppay(){if(s.down){toast("Servicio con demoras. Reintenta en unos segundos.");return}
+const a=parseFloat($("pa").value.replace(",",".")),r=s.pay;s.saldo-=a;const m=add(r.n,1,a);s.res={t:"¡Pago realizado!",sub:"Guarda tu constancia",amt:a,line:`a <b>${r.n}</b>`,rows:[[r.f,$("pf").value],["Fecha",fd(m.d)],["N.° de operación",m.op],["Código de seguridad",m.code]]};s.v="res";render()}
+reset();
+</script></body></html>
